@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.junda.dao.UserDao">
+
+
+
+    <resultMap id="user_map" type="com.junda.model.User">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="sex" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="age" jdbcType="TINYINT" javaType="java.lang.Integer"/>
+            <arg column="status" jdbcType="TINYINT" javaType="java.lang.Integer"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,user_id,name,sex,age,status,create_time,update_time
+    </sql>
+
+    <select id="getUserList" resultMap="user_map">
+        select
+        <include refid="Base_Column_List"/>
+        from hs_user
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultMap="user_map">
+        select
+        <include refid="Base_Column_List"/>
+        from hs_user
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId" parameterType="java.lang.Long">
+        delete from hs_user where user_id=#{userId}
+    </delete>
+
+    <update id="update" parameterType="com.junda.model.User">
+        update hs_user set
+          name=#{name},
+          sex=#{sex},
+          age=#{age},
+          status=#{status},
+          update_time=#{updateTime}
+        where user_id=#{userId}
+    </update>
+
+    <insert id="add" parameterType="com.junda.model.User">
+        insert into hs_user(user_id,name,sex,age)
+        values
+        (#{userId},#{name},#{sex},#{age})
+    </insert>
+
+
+</mapper>
